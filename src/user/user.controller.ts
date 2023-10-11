@@ -10,7 +10,8 @@ export class UserController {
   @Post()
   @ApiTags('Users')
   public async create(@Query() data: UserDTO, @Res() response: Response) {
-    return response.status(200).json(await this.service.create(data));
+    const { password, ...rest } = await this.service.create(data);
+    return response.status(200).json(rest);
   }
   public async login(@Query() data: UserDTO, @Res() response: Response) {
     return response.status(200).json(data);
