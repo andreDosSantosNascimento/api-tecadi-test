@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       - POSTGRES_PASSWORD=postgres
-    container_name: postgres
+    container_name: DATABASE
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     ports:
@@ -16,7 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: tecadi_api
+    container_name: API
     environment:
       - PORT=${PORT}
     ports:
@@ -25,3 +25,15 @@ services:
       - db
     volumes:
       - ./src:/app/src
+
+  migration:
+    build:
+      context: .
+    container_name: MIGRATION
+    command: ['npm', 'run', 'migration:up']
+    links:
+      - db
+    depends_on:
+      - db
+volumes:
+  pg_data: null

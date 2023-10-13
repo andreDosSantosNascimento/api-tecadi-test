@@ -7,7 +7,7 @@ export class UserDTO {
   })
   readonly username: string;
   @ApiProperty({
-    example: '123456',
+    example: 'CapivaRA167',
     description: 'Senha do usuário',
   })
   password: string;

@@ -2,11 +2,8 @@ FROM node:18
 
 WORKDIR /usr/src
 
-COPY package*.json ./
-
-RUN npm install
-
 COPY . .
+COPY package.json ./
 COPY .env.production .env
 
 RUN npm install --quiet --no-optional --no-fund --loglevel=error
