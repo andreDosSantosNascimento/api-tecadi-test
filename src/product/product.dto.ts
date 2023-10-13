@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { GrupoEnum, UmEnum } from './product.entity';
+import { PaginationDTO } from 'src/util/pagination.dto';
 
 export class ProductDTO {
   @ApiProperty({
@@ -25,11 +26,30 @@ export class ProductDTO {
   @ApiProperty({
     example: 'SUMI',
     description: 'Grupo do produto',
+    enum: GrupoEnum,
   })
   grupo: GrupoEnum;
   @ApiProperty({
     example: 'UN',
     description: 'Unidade de medida',
+    enum: UmEnum,
   })
   um: UmEnum;
+}
+export class ProductListDTO extends PaginationDTO {
+  @ApiProperty({
+    example: '5050-4040',
+    description: 'Código de produto específico.',
+    required: false,
+  })
+  codigo: string;
+}
+
+export class ProductCodigoDTO {
+  @ApiProperty({
+    example: '5050-4040',
+    description: 'Código de produto específico.',
+    required: false,
+  })
+  codigo: string;
 }
