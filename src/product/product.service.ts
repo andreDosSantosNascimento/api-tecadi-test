@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Product } from './product.entity';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { ProductDTO, ProductListDTO } from './product.dto';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class ProductService {
       codigo: body.grupo + body.codigoCliente,
     });
   }
-  async update(data: ProductDTO) {
+  async update(data: DeepPartial<Product>) {
     return await this.repository.save(data);
   }
   async list(query: ProductListDTO) {
@@ -27,6 +27,7 @@ export class ProductService {
     if (query.codigo) {
       options.where = { codigo: query.codigo };
     }
+
     return {
       offset: options.skip,
       limit: options.take,

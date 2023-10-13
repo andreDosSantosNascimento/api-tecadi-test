@@ -7,12 +7,13 @@ import {
   Body,
   Delete,
   Get,
-  Param,
   Patch,
   Post,
   Res,
   Query,
 } from '@nestjs/common';
+import { Product } from './product.entity';
+import { DeepPartial } from 'typeorm';
 
 @Controller('product')
 export class ProductController {
@@ -20,7 +21,14 @@ export class ProductController {
   @Post()
   @ApiTags('Products')
   async create(@Body() body: ProductDTO, @Res() response: Response) {
-    return response.status(200).json(await this.service.create(body));
+    try {
+      await this.service.create(body);
+      return response
+        .status(201)
+        .json({ message: 'Produto cadastrado com sucesso' });
+    } catch (error) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 
   @Patch()
@@ -30,18 +38,25 @@ export class ProductController {
     @Body() body: ProductDTO,
     @Res() response: Response,
   ) {
-    return response.status(200).json(
-      await this.service.update({
-        ...body,
-        codigo: query.codigo,
-      } as ProductDTO),
-    );
+    const data: DeepPartial<Product> = {
+      ...body,
+      codigo: query.codigo,
+    };
+    try {
+      return response.status(200).json(await this.service.update(data));
+    } catch (error) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 
   @Get()
   @ApiTags('Products')
   async list(@Query() query: ProductListDTO, @Res() response: Response) {
-    return response.status(200).json(await this.service.list(query));
+    try {
+      return response.status(200).json(await this.service.list(query));
+    } catch (error) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 
   @Delete()
