@@ -1,3 +1,7 @@
+import { ApiTags } from '@nestjs/swagger';
+import { ProductService } from './product.service';
+import { Response } from 'express';
+import { ProductDTO } from './product.dto';
 import {
   Controller,
   Body,
@@ -7,11 +11,8 @@ import {
   Patch,
   Post,
   Res,
+  Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { ProductService } from './product.service';
-import { Response } from 'express';
-import { ProductDTO } from './product.dto';
 
 @Controller('product')
 export class ProductController {
@@ -38,9 +39,14 @@ export class ProductController {
     return response.status(200).json({ id });
   }
 
-  @Delete('/:id')
+  @Delete()
   @ApiTags('Products')
-  async remove(@Param('id') id: string, @Res() response: Response) {
-    return response.status(200).json({ id });
+  async remove(@Query('codigo') codigo: string, @Res() response: Response) {
+    try {
+      await this.service.remove(codigo);
+      return response.status(204).json();
+    } catch (error) {
+      return response.status(400).json({ message: error.message });
+    }
   }
 }

@@ -16,6 +16,10 @@ export class ProductService {
   }
   async update() {}
   async list() {}
-  async get() {}
-  async remove() {}
+  async remove(codigo: string) {
+    if (!codigo) {
+      throw new Error('Código de produto não foi informado');
+    }
+    return await this.repository.delete(codigo);
+  }
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Entity, Column, BaseEntity } from 'typeorm';
 
 export enum GrupoEnum {
   SPRI = 'SPRI',
