@@ -1,4 +1,4 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { Response } from 'express';
 import { ProductCodigoDTO, ProductDTO, ProductListDTO } from './product.dto';
@@ -19,6 +19,7 @@ import { DeepPartial } from 'typeorm';
 export class ProductController {
   constructor(private service: ProductService) {}
   @Post()
+  @ApiBearerAuth()
   @ApiTags('Products')
   async create(@Body() body: ProductDTO, @Res() response: Response) {
     try {
@@ -32,6 +33,7 @@ export class ProductController {
   }
 
   @Patch()
+  @ApiBearerAuth()
   @ApiTags('Products')
   async update(
     @Query() query: ProductCodigoDTO,
@@ -50,6 +52,7 @@ export class ProductController {
   }
 
   @Get()
+  @ApiBearerAuth()
   @ApiTags('Products')
   async list(@Query() query: ProductListDTO, @Res() response: Response) {
     try {
@@ -60,6 +63,7 @@ export class ProductController {
   }
 
   @Delete()
+  @ApiBearerAuth()
   @ApiTags('Products')
   async remove(@Query() query: ProductCodigoDTO, @Res() response: Response) {
     try {
