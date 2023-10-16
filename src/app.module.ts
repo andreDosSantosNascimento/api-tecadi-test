@@ -5,6 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
+import { AuthMiddleware } from './auth/auth.middleware';
+import { userProviders } from './user/user.provider';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -25,24 +28,15 @@ import { ProductModule } from './product/product.module';
       dataSourceFactory: async (options) =>
         await new DataSource(options).initialize(),
     }),
+    DatabaseModule,
     UserModule,
     ProductModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [...userProviders],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply((req, res, next) => {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header(
-          'Access-Control-Allow-Methods',
-          'GET, PUT, POST, DELETE, OPTIONS',
-        );
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
-        next();
-      })
-      .forRoutes('*');
+    consumer.apply(AuthMiddleware).forRoutes('product');
   }
 }

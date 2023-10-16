@@ -56,6 +56,8 @@ export class ProductController {
   @ApiTags('Products')
   async list(@Query() query: ProductListDTO, @Res() response: Response) {
     try {
+      console.log('entrou');
+      
       return response.status(200).json(await this.service.list(query));
     } catch (error) {
       return response.status(400).json({ message: error.message });
