@@ -26,7 +26,7 @@ export class UserController {
     try {
       return response.status(200).json(await this.service.login(data));
     } catch (error) {
-      return response.status(400).json({
+      return response.status(401).json({
         message: 'Erro ao realizar Login',
         error: error.message,
       });
